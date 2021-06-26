@@ -4,6 +4,8 @@ pragma solidity 0.8.2;
 
 import "OpenZeppelin/openzeppelin-contracts@4.1.0/contracts/access/AccessControl.sol";
 
+/// @title Token Registry
+/// @author Sawit Trisirisatayawong (@tansawit)
 contract TokenRegistry is AccessControl {
     mapping(address => string) addressToSymbol;
     mapping(string => address) symbolToAddress;
@@ -15,6 +17,12 @@ contract TokenRegistry is AccessControl {
         _setupRole(MAPPER_ROLE, msg.sender);
     }
 
+    /// @notice Set a mapping between a token address and symbol
+    /// @dev takes two lists of token addresses and symbols, and create a mapping between them
+    /// the two list must be the same length
+    /// only callable by an address with a MAPPER role
+    /// @param tokenAddresses list of token addresses to map to symbols
+    /// @param tokenSymbols list of token symbols to map to addresses
     function setMapping(
         address[] memory tokenAddresses,
         string[] memory tokenSymbols
@@ -30,6 +38,8 @@ contract TokenRegistry is AccessControl {
         }
     }
 
+    /// @notice get the corresponding token symbol of a given token contract address
+    /// @param tokenAddress address of the token to query to symbol of
     function getSymbol(address tokenAddress)
         external
         view
@@ -38,6 +48,8 @@ contract TokenRegistry is AccessControl {
         return addressToSymbol[tokenAddress];
     }
 
+    /// @notice get the corresponding token address of a given token symbol
+    /// @param tokenSymbol symbol of the token to query to address of
     function getAddress(string memory tokenSymbol)
         external
         view
